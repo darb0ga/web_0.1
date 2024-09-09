@@ -33,8 +33,25 @@ td {
     border: 2px solid darkolivegreen;
 }
 
-#check{
+#check {
     border-collapse: collapse;
     padding: inherit;
 
+}
+
+tr {
+    height: 5em;
+    width: 3em;
+    font-size: large;
+}
+
+button {
+    position: absolute;
+    text-align: center;
+    font-size: large;
+}
+
+button:hover {
+    background-color: darkblue;
+    color: white;
 }
