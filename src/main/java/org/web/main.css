@@ -49,9 +49,5 @@ button {
     position: absolute;
     text-align: center;
     font-size: large;
-}
-
-button:hover {
-    background-color: darkblue;
-    color: white;
+    background-color: white;
 }
