@@ -13,7 +13,6 @@
 </header>
 <hr>
 <table>
-    <!--<caption>МОЕ ДЕТИЩЕ</caption>-->
     <td>
         <table id="check">
             <caption>Выберите значение</caption>
@@ -21,13 +20,13 @@
                 <tr>
                     <td>
                         <label for="x">Введите X:</label>
-                        <input name="x" id="x" type="text"/>
+                        <input class="x" id="x" type="text"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label for="y">Выберите Y:</label>
-                        <select id="y" name="y">
+                        <select id="y" class="y">
                             <option value="-2">
                                 -2
                             </option>
@@ -61,26 +60,26 @@
                 <tr>
                     <td>
                         <label>Выберите R:</label>
-                        <input class="r1" id="r1" type="checkbox" name="1"/>
+                        <input class="r" id="r1" type="checkbox" name="1"/>
                         <label for="r1">1</label>
-                        <input class="r1.5" id="r1.5" type="checkbox" name="1.5"/>
+                        <input class="r" id="r1.5" type="checkbox" name="1.5"/>
                         <label for="r1.5">1.5</label>
-                        <input class="r1" id="r2" type="checkbox" name="2"/>
+                        <input class="r" id="r2" type="checkbox" name="2"/>
                         <label for="r2">2</label>
-                        <input class="r2.5" id="r2.5" type="checkbox" name="2.5"/>
+                        <input class="r" id="r2.5" type="checkbox" name="2.5"/>
                         <label for="r2.5">2.5</label>
-                        <input class="r3" id="r3" type="checkbox" name="3"/>
+                        <input class="r" id="r3" type="checkbox" name="3"/>
                         <label for="r3">3</label>
                     </td>
                 </tr>
             </form>
         </table>
-        <button type="button" value="Отправить данные">Отправить данные</button>
+        <button onclick=" onSubmit();" type="button" id="button" value="Отправить данные">Отправить данные</button>
     </td>
     <td>
         <img src="img/area.png" alt="Координатная плоскость" height="380" width="400">
     </td>
-    <td style="width: 45%">
+    <td style="width: 35%">
         <table id="results">
             <div>
                 <p>Результаты</p>

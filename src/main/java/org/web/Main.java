@@ -1,6 +1,5 @@
 package org.web;
 
-
 import com.fastcgi.FCGIInterface;
 
 import java.nio.charset.StandardCharsets;
@@ -18,10 +17,17 @@ public class Main {
                     HTTP/1.1 200 OK
                     Content-Type: text/html
                     Content-Length: %d
-
                     %s
                     """.formatted(content.getBytes(StandardCharsets.UTF_8).length, content);
             System.out.println(httpResponse);
+            //System.out.println(fcgiInterface.FCGIaccept());
         }
     }
+
+    public static void validate(){
+        //проверка на попадание в фигуру
+        //отсылка ответа на страницу
+
+    }
+
 }
