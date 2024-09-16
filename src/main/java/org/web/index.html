@@ -17,19 +17,17 @@
     <td>
         <table id="check">
             <caption>Выберите значение</caption>
-            <tr>
-                <td>
-                    <label for="x">Введите X:</label>
-                    <div>
-                        <input title="Введите значение x" class="x" id="x" type="text"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="y">Выберите Y:</label>
-                    <div>
-                        <select name="Введите значение y" class="y" id="y">
+            <form method="post" action="/">
+                <tr>
+                    <td>
+                        <label for="x">Введите X:</label>
+                        <input name="x" id="x" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="y">Выберите Y:</label>
+                        <select id="y" name="y">
                             <option value="-2">
                                 -2
                             </option>
@@ -58,13 +56,11 @@
                                 2
                             </option>
                         </select>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Выберите R:</label>
-                    <div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Выберите R:</label>
                         <input class="r1" id="r1" type="checkbox" name="1"/>
                         <label for="r1">1</label>
                         <input class="r1.5" id="r1.5" type="checkbox" name="1.5"/>
@@ -75,35 +71,32 @@
                         <label for="r2.5">2.5</label>
                         <input class="r3" id="r3" type="checkbox" name="3"/>
                         <label for="r3">3</label>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            </form>
         </table>
         <button type="button" value="Отправить данные">Отправить данные</button>
     </td>
     <td>
-        <img src="img/area.png" alt="Координатная плоскость" height="390" width="400">
+        <img src="img/area.png" alt="Координатная плоскость" height="380" width="400">
     </td>
-    <td>
-        <table>
-            <caption>Результаты</caption>
+    <td style="width: 45%">
+        <table id="results">
+            <div>
+                <p>Результаты</p>
+            </div>
             <tr>
-                X
-            </tr>
-            <tr>
-                Y
-            </tr>
-            <tr>
-                R
-            </tr>
-            <tr>
-                got it?
-            </tr>
-            <tr>
-                some time
+                <th>X</th>
+                <th>Y</th>
+                <th>R</th>
+                <th>true or false</th>
+                <th>time</th>
             </tr>
         </table>
     </td>
 </table>
+<script type="text/javascript" language="javascript"
+        src="index.js">
+</script>
 </body>
 </html>
