@@ -1,6 +1,5 @@
 const results = document.getElementById("results");
 
-const date = new Date();
 
 function validate(x, y, r) {
     if (!x) {
@@ -28,7 +27,7 @@ function validate(x, y, r) {
 }
 
 async function onSubmit() {
-    const startedTime = date.getTime();
+    var startedTime = new Date().getMilliseconds();
     var x = document.querySelector(".x");
     var y = document.querySelector(".y")
     var checkboxes = document.querySelectorAll('input[class="r"]:checked');
@@ -37,14 +36,51 @@ async function onSubmit() {
         r_values.push(el.name);
     })
     var errorText = validate(x.value, y.value, r_values);
+    console.log(errorText);
     if(!errorText){
+        var table = results.querySelectorAll('.results');
+        console.log(r_values[0]);
+        addRow(x.value, y.value, r_values[0], startedTime);
          //все хорошо продолжаем работу
         // время ответа?
-        // заполнить форму с резами
     }else{
         //неверные данные
         //просьба передеоать данные
     }
 
     return [x.value, y.value, r_values];
+}
+
+function addRow(x, y, r, time){
+    var table = document.getElementById("results");
+    var rowCount = table.rows.length;
+    var newRow = table.insertRow(rowCount-1);
+
+    var cell1 = newRow.insertCell(0);
+    var element1 = document.createElement("output");
+    element1.value = x;
+    cell1.appendChild(element1);
+
+    var cell2 = newRow.insertCell(1);
+    var element2 = document.createElement("output");
+    element2.value = y;
+    cell2.appendChild(element2);
+
+    var cell3 = newRow.insertCell(2);
+    var element3 = document.createElement("output");
+    element3.value = r;
+    cell3.appendChild(element3);
+
+    var cell4 = newRow.insertCell(2);
+    var element4 = document.createElement("output");
+    element4.value = "yes";
+    //тут обращение к серверу для подсчета
+    cell4.appendChild(element4);
+
+    var cell5 = newRow.insertCell(2);
+    var element5 = document.createElement("output");
+    element5.value = (new Date().getMilliseconds() - time).toString() + 'ms';
+    cell5.appendChild(element5);
+
+
 }
