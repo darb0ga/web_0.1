@@ -71,13 +71,13 @@ function addRow(x, y, r, time){
     element3.value = r;
     cell3.appendChild(element3);
 
-    var cell4 = newRow.insertCell(2);
+    var cell4 = newRow.insertCell(3);
     var element4 = document.createElement("output");
     element4.value = "yes";
     //тут обращение к серверу для подсчета
     cell4.appendChild(element4);
 
-    var cell5 = newRow.insertCell(2);
+    var cell5 = newRow.insertCell(4);
     var element5 = document.createElement("output");
     element5.value = (new Date().getMilliseconds() - time).toString() + 'ms';
     cell5.appendChild(element5);
