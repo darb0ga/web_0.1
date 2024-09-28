@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    background-image: url("img/wallpaper.png");
+    background-image: url("img/wall.png");
     background-size: cover;
     background-attachment: fixed;
 }
@@ -27,6 +27,17 @@ caption {
     text-align: left;
 }
 
+.x {
+    height: 20px;
+    margin: 7px;
+    width: 200px;
+}
+
+.y {
+    height: 30px;
+    margin: 7px;
+}
+
 td {
     text-align: initial;
     padding: 8px;
@@ -50,4 +61,18 @@ button {
     text-align: center;
     font-size: large;
     background-color: white;
+    width: 435px;
+    height: 35px;
+    border-width: 4px;
+}
+
+input[type="checkbox"] {
+    border: 1px solid #000;
+    background-color: black;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    margin: 7px;
 }

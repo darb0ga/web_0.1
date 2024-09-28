@@ -39,7 +39,6 @@ async function onSubmit() {
     console.log(errorText);
     if(!errorText){
         var table = results.querySelectorAll('.results');
-        console.log(r_values[0]);
         addRow(x.value, y.value, r_values[0], startedTime);
          //все хорошо продолжаем работу
         // время ответа?
@@ -54,7 +53,7 @@ async function onSubmit() {
 function addRow(x, y, r, time){
     var table = document.getElementById("results");
     var rowCount = table.rows.length;
-    var newRow = table.insertRow(rowCount-1);
+    var newRow = table.insertRow(-1);
 
     var cell1 = newRow.insertCell(0);
     var element1 = document.createElement("output");
