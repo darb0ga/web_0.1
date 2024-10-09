@@ -2,38 +2,61 @@ package org.web;
 
 import com.fastcgi.FCGIInterface;
 
+import java.util.Properties;
+
 
 public class Main {
+    private static String resTable = """
+            {
+                "time": "%s",
+                "result": %b
+            }
+            """;
+
+    private static final String httpResponse = """
+            Content-Type: application/json
+                    
+            {"code":"%d","result":"%s","x":"%d","y":"%.3f","r":"%.1f","time":"%s","result":"%.3f"}
+            """;
+
     public static void main(String[] args) {
-        var httpResponse = """
-                HTTP/1.1 200 OK
-                Content-Type: text/html
-                Content-Length: %d
-                %s
-                """;
 
 
-        var fcgiInterface = new FCGIInterface();
+        FCGIInterface fcgiInterface = new FCGIInterface();
         while (fcgiInterface.FCGIaccept() >= 0) {
-            var getParams = System.getProperties().getProperty("QUERY_STRING");
-            //var params = ???
-            long startTime = System.currentTimeMillis();
-            //change
-            int x = 1;
-            int y = 1;
-            int r = 1;
 
-            var checking = checkDot(x, y, r);
-            long prossTime = System.currentTimeMillis() - startTime;
+                long time = System.nanoTime();
+                Properties prop = System.getProperties();
+                String QUERY_STRING = prop.getProperty("QUERY_STRING");
+                if (!QUERY_STRING.isBlank()) {
 
-
+                    String[] responseData = QUERY_STRING.split("&");
+                    float x = Float.parseFloat(responseData[0].substring(2));
+                    int y = Integer.parseInt(responseData[1].substring(2));
+                    int r = Integer.parseInt(responseData[2].substring(2));
 
 
-            System.out.println(httpResponse);
+                    //String getParams = System.getProperties().getProperty("QUERY_STRING");
+
+
+                    //System.out.println(FCGIInterface.request.params.getProperty("REQUEST_METHOD"));
+
+                    long startTime = System.currentTimeMillis();
+
+                    var checking = checkDot(x, y, r);
+                    long prossTime = System.currentTimeMillis() - startTime;
+
+
+                    var json = String.format(resTable, prossTime, checking);
+                    var response = String.format(httpResponse, json.getBytes().length + 2, json);
+
+                    System.out.println(response);
+                }
+
         }
     }
 
-    private static boolean checkDot(int x, int y, int r) {
+    private static boolean checkDot(float x, int y, int r) {
         if (x > 0) {
             if (y <= 0) {
                 return x <= r & y >= -r / 2;
@@ -42,40 +65,13 @@ public class Main {
             }
         } else {
             if (y <= 0) {
-                return x - (r / 2) <= y;
+                return x - ((float) r / 2) <= y;
             }
             return false;
         }
     }
 
-        //отсылка ответа на страницу
-        //адо еще сделать так что бы при обновлении данные не пропадали
-
-        //и кнопки побольше
-        //ширину столбцов изменитьь
-
-
-
-    //public static void main(String[] args) {
-    //        var fcgi = new FCGIInterface();
-    //        while (fcgi.FCGIaccept() >= 0) {
-    //            try {
-    //                var queryParams = System.getProperties().getProperty("QUERY_STRING");
-    //                var params = new Params(queryParams);
-    //
-    //                var startTime = Instant.now();
-    //                var result = calculate(params.getX(), params.getY(), params.getR());
-    //                var endTime = Instant.now();
-    //
-    //                var json = String.format(RESULT_JSON, ChronoUnit.NANOS.between(startTime, endTime), LocalDateTime.now(), result);
-    //                var response = String.format(HTTP_RESPONSE, json.getBytes(StandardCharsets.UTF_8).length + 2, json);
-    //                System.out.println(response);
-    //            } catch (ValidationException e) {
-    //                var json = String.format(ERROR_JSON, LocalDateTime.now(), e.getMessage());
-    //                var response = String.format(HTTP_ERROR, json.getBytes(StandardCharsets.UTF_8).length + 2, json);
-    //                System.out.println(response);
-    //            }
-    //        }
-    //    }
+    //отсылка ответа на страницу
+    //адо еще сделать так что бы при обновлении данные не пропадали
 
 }

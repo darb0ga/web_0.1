@@ -1,4 +1,4 @@
-const results = document.getElementById("results");
+const results = document.getElementById('results');
 
 
 function validate(x, y, r) {
@@ -26,31 +26,84 @@ function validate(x, y, r) {
     return null;
 }
 
-async function onSubmit() {
+
+function onSubmit() {
+
+    console.log('jjjj');
+    const form = document.querySelector('#table');
+
+    let askForm = new FormData(form);
+
+    //форма принимается адекватно
+
+
+    // Преобразуем данные формы в строку запроса
+    //const queryString = new URLSearchParams(askForm).toString();
+
+    // Отправляем данные на сервер с помощью fetch
+    fetch('/fcgi-bin/web.jar?' + new URLSearchParams(askForm).toString() ) //авот здесь уже конкретнве проблемы идут у меня с башкой
+        .then(response => {
+            // Проверяем, успешно ли выполнен запрос
+            if (!response.ok) {
+                throw new Error('Сеть ответила с ошибкой: ' + response.status);
+            }
+            return response.text(); // или response.json() для JSON-ответа
+        })
+        .then(data => {
+            // Обрабатываем данные, полученные от сервера
+            console.log(data);
+        })
+        .catch(error => {
+            // Обрабатываем ошибки
+            console.error('Ошибка:', error);
+        });
+
+
     var startedTime = new Date().getMilliseconds();
-    var x = document.querySelector(".x");
-    var y = document.querySelector(".y")
+    var xValue = document.querySelector('#x').value; // не берется данные от х
+    var yValue = document.querySelector('#y').value;
     var checkboxes = document.querySelectorAll('input[class="r"]:checked');
     var r_values = [];
     checkboxes.forEach((el) => {
         r_values.push(el.name);
     })
-    var errorText = validate(x.value, y.value, r_values);
+
+    var errorText = validate(xValue, yValue, r_values);
     console.log(errorText);
-    if(!errorText){
+
+    if (!errorText) {
+
         var table = results.querySelectorAll('.results');
-        addRow(x.value, y.value, r_values[0], startedTime);
-         //все хорошо продолжаем работу
-        // время ответа?
-    }else{
+        console.log(xValue)
+        addRow(xValue, yValue, r_values, response);
+    } else {
+        console.log(errorText);
         //неверные данные
         //просьба передеоать данные
     }
 
-    return [x.value, y.value, r_values];
+    //return [x.value, y.value, r_values];
 }
 
-function addRow(x, y, r, time){
+async function addRow(x, y, r, response) {
+
+    if (response.ok) {
+        const result = await response.json();
+        const finish = new Date(result.now).toLocaleString();
+        results.execTime = finish + 'ns';
+        results.result = result.result.toString();
+    } else if (response.status === 400) {
+        const result = await response.json();
+        results.execTime = "N/A";
+        results.result = `error:  400`;
+    } else {
+        results.time = "N/A";
+        results.result = "error"
+    }
+
+    console.log(results);
+    console.log(results.result.toString())
+
     var table = document.getElementById("results");
     var rowCount = table.rows.length;
     var newRow = table.insertRow(-1);
@@ -72,14 +125,13 @@ function addRow(x, y, r, time){
 
     var cell4 = newRow.insertCell(3);
     var element4 = document.createElement("output");
-    element4.value = "yes";
-    //тут обращение к серверу для подсчета
+    element4.value = results.result;
+
+    element4.value = "";
     cell4.appendChild(element4);
 
     var cell5 = newRow.insertCell(4);
     var element5 = document.createElement("output");
-    element5.value = (new Date().getMilliseconds() - time).toString() + 'ms';
+    element5.value = results.time;
     cell5.appendChild(element5);
-
-
 }

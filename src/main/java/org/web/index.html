@@ -1,11 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html;
  charset=utf-8">
     <title>Пример веб-страницы</title>
     <link rel="stylesheet" href="main.css">
+    <script defer type="text/javascript" src="index.js"></script>
 </head>
 <body>
 <header>
@@ -15,18 +16,18 @@
 <table>
     <td>
         <table id="check">
-            <caption>Выберите значение</caption>
-            <form method="post" action="/">
+            <p>Выберите значение</p>
+            <form method="post" action="/" id="table">
                 <tr>
                     <td>
                         <label for="x">Введите X:</label>
-                        <input class="x" id="x" type="text" placeholder="введите значения от -5 до 3"/>
+                        <input name="x" id="x" type="text" placeholder="введите значения от -5 до 3"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label for="y">Выберите Y:</label>
-                        <select id="y" class="y">
+                        <select id="y" name="y">
                             <option value="-2">
                                 -2
                             </option>
@@ -61,15 +62,15 @@
                     <td>
                         <label>Выберите R:</label>
                         <p>
-                        <input class="r" id="r1" type="checkbox" name="1"/>
+                        <input name="r" id="r1" type="checkbox" value="1"/>
                         <label for="r1">1</label>
-                        <input class="r" id="r1.5" type="checkbox" name="1.5"/>
+                        <input name="r" id="r1.5" type="checkbox" value="1.5"/>
                         <label for="r1.5">1.5</label>
-                        <input class="r" id="r2" type="checkbox" name="2"/>
+                        <input name="r" id="r2" type="checkbox" value="2"/>
                         <label for="r2">2</label>
-                        <input class="r" id="r2.5" type="checkbox" name="2.5"/>
+                        <input name="r" id="r2.5" type="checkbox" value="2.5"/>
                         <label for="r2.5">2.5</label>
-                        <input class="r" id="r3" type="checkbox" name="3"/>
+                        <input name="r" id="r3" type="checkbox" value="3"/>
                         <label for="r3">3</label>
                         </p>
                     </td>
@@ -79,7 +80,7 @@
         <button onclick=" onSubmit();" type="button" id="button" value="Отправить данные">Отправить данные</button>
     </td>
     <td>
-        <img src="img/area.png" alt="Координатная плоскость" height="380" width="400">
+        <img src="img/area.png" alt="Координатная плоскость" height="380" width="415">
     </td>
     <td style="width: 35%">
         <table id="results">
@@ -96,8 +97,6 @@
         </table>
     </td>
 </table>
-<script type="text/javascript" language="javascript"
-        src="index.js">
-</script>
+
 </body>
 </html>

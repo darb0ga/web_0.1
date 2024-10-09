@@ -39,7 +39,7 @@ caption {
 }
 
 td {
-    text-align: initial;
+    text-align: center;
     padding: 8px;
     border: 2px solid darkolivegreen;
 }
@@ -57,13 +57,13 @@ tr {
 }
 
 button {
-    position: absolute;
     text-align: center;
     font-size: large;
     background-color: white;
-    width: 435px;
     height: 35px;
+    width: 100%;
     border-width: 4px;
+    border-color: darkgreen;
 }
 
 input[type="checkbox"] {
