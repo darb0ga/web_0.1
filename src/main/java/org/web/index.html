@@ -62,25 +62,32 @@
                     <td>
                         <label>Выберите R:</label>
                         <p>
-                        <input name="r" id="r1" type="checkbox" value="1"/>
-                        <label for="r1">1</label>
-                        <input name="r" id="r1.5" type="checkbox" value="1.5"/>
-                        <label for="r1.5">1.5</label>
-                        <input name="r" id="r2" type="checkbox" value="2"/>
-                        <label for="r2">2</label>
-                        <input name="r" id="r2.5" type="checkbox" value="2.5"/>
-                        <label for="r2.5">2.5</label>
-                        <input name="r" id="r3" type="checkbox" value="3"/>
-                        <label for="r3">3</label>
-                        </p>
+                        <div class="group">
+                            <input name="r" id="r1" class="checkbox" type="checkbox" onclick="checkBox(this);"
+                                   value="1"/>
+                            <label for="r1">1</label>
+                            <input name="r" id="r1.5" class="checkbox" type="checkbox" onclick="checkBox(this);"
+                                   value="1.5"/>
+                            <label for="r1.5">1.5</label>
+                            <input name="r" id="r2" class="checkbox" type="checkbox" onclick="checkBox(this);"
+                                   value="2"/>
+                            <label for="r2">2</label>
+                            <input name="r" id="r2.5" class="checkbox" type="checkbox" onclick="checkBox(this);"
+                                   value="2.5"/>
+                            <label for="r2.5">2.5</label>
+                            <input name="r" id="r3" class="checkbox" type="checkbox" onclick="checkBox(this);"
+                                   value="3"/>
+                            <label for="r3">3</label>
+                        </div>
                     </td>
                 </tr>
             </form>
         </table>
         <button onclick=" onSubmit();" type="button" id="button" value="Отправить данные">Отправить данные</button>
+        <button onclick=" clean();" type="button" value="Удалить данные">Удалить данные</button>
     </td>
     <td>
-        <img src="img/area.png" alt="Координатная плоскость" height="380" width="415">
+        <img src="img/area.png" alt="Координатная плоскость">
     </td>
     <td style="width: 35%">
         <table id="results">
@@ -93,6 +100,7 @@
                 <td>R</td>
                 <td>true or false</td>
                 <td>time</td>
+                <td>scriptTime</td>
             </tr>
         </table>
     </td>
