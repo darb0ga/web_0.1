@@ -1,6 +1,3 @@
-const results = document.getElementById('results');
-
-
 function validate(x, y, r) {
     if (!x) {
         return "x is not defined";
@@ -13,125 +10,134 @@ function validate(x, y, r) {
     if (parseInt(x) > 3 || parseInt(x) < -5) {
         return "x must be in [-5; 3]";
     }
-
     if (r.length < 1) {
         return "r is not defined";
     }
+
     if (!y) {
         return "y is not defined";
     }
+
     if (r.length > 1) {
         return "choose one value of r";
     }
+
     return null;
 }
 
-
 function onSubmit() {
-
-    console.log('jjjj');
     const form = document.querySelector('#table');
-
     let askForm = new FormData(form);
 
-    //форма принимается адекватно
+    let sending = validate(askForm.get('x'), askForm.get('y'), askForm.getAll('r'));
+    const queryString = new URLSearchParams(askForm).toString();
+    if (!sending) {
 
+        fetch('/fcgi-bin/web.jar?' + queryString, {method: "GET"})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сеть ответила с ошибкой: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(data => {
+                const responseData = JSON.parse(data);
 
-    // Преобразуем данные формы в строку запроса
-    //const queryString = new URLSearchParams(askForm).toString();
-
-    // Отправляем данные на сервер с помощью fetch
-    fetch('/fcgi-bin/web.jar?' + new URLSearchParams(askForm).toString() ) //авот здесь уже конкретнве проблемы идут у меня с башкой
-        .then(response => {
-            // Проверяем, успешно ли выполнен запрос
-            if (!response.ok) {
-                throw new Error('Сеть ответила с ошибкой: ' + response.status);
-            }
-            return response.text(); // или response.json() для JSON-ответа
-        })
-        .then(data => {
-            // Обрабатываем данные, полученные от сервера
-            console.log(data);
-        })
-        .catch(error => {
-            // Обрабатываем ошибки
-            console.error('Ошибка:', error);
-        });
-
-
-    var startedTime = new Date().getMilliseconds();
-    var xValue = document.querySelector('#x').value; // не берется данные от х
-    var yValue = document.querySelector('#y').value;
-    var checkboxes = document.querySelectorAll('input[class="r"]:checked');
-    var r_values = [];
-    checkboxes.forEach((el) => {
-        r_values.push(el.name);
-    })
-
-    var errorText = validate(xValue, yValue, r_values);
-    console.log(errorText);
-
-    if (!errorText) {
-
-        var table = results.querySelectorAll('.results');
-        console.log(xValue)
-        addRow(xValue, yValue, r_values, response);
+                if (responseData.code === "200") {
+                    addRow(responseData.x, responseData.y, responseData.r, responseData.result, responseData.time, responseData.scriptTime);
+                    localStorage.setItem('savedLastTries', JSON.stringify(tableToJson(document.getElementById('results'))));
+                } else {
+                    console.error("Ошибка:", responseData.result);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
     } else {
-        console.log(errorText);
-        //неверные данные
-        //просьба передеоать данные
+        alert(sending);
     }
-
-    //return [x.value, y.value, r_values];
 }
 
-async function addRow(x, y, r, response) {
+async function addRow(x, y, r, result, time, scriptTime) {
+    let table = document.getElementById("results");
+    let newRow = table.insertRow(-1);
 
-    if (response.ok) {
-        const result = await response.json();
-        const finish = new Date(result.now).toLocaleString();
-        results.execTime = finish + 'ns';
-        results.result = result.result.toString();
-    } else if (response.status === 400) {
-        const result = await response.json();
-        results.execTime = "N/A";
-        results.result = `error:  400`;
-    } else {
-        results.time = "N/A";
-        results.result = "error"
+    let cell1 = newRow.insertCell(0);
+    cell1.textContent = x;
+
+    let cell2 = newRow.insertCell(1);
+    cell2.textContent = y;
+
+    let cell3 = newRow.insertCell(2);
+    cell3.textContent = r;
+
+    let cell4 = newRow.insertCell(3);
+    cell4.textContent = result;
+
+    let cell5 = newRow.insertCell(4);
+    cell5.textContent = time;
+
+    let cell6 = newRow.insertCell(5);
+    cell6.textContent = scriptTime;
+
+}
+
+window.addEventListener('load', loadData());
+
+function loadData() {
+    let savedMas = JSON.parse(localStorage.getItem('savedLastTries'));
+    if (savedMas) {
+
+        let lastTries = document.getElementById('results');
+        for (let i = 0; i < savedMas.length; i++) {
+            const newRow = lastTries.insertRow(-1);
+            const resCell = newRow.insertCell(0)
+            const xCell = newRow.insertCell(1);
+            const yCell = newRow.insertCell(2);
+            const rCell = newRow.insertCell(3);
+            const timeCell = newRow.insertCell(4);
+            const scriptCell = newRow.insertCell(5);
+
+            resCell.textContent = savedMas[i][0];
+            xCell.textContent = savedMas[i][1];
+            yCell.textContent = savedMas[i][2];
+            rCell.textContent = savedMas[i][3];
+            timeCell.textContent = savedMas[i][4];
+            scriptCell.textContent = savedMas[i][5];
+        }
+        return null;
     }
+}
 
-    console.log(results);
-    console.log(results.result.toString())
 
-    var table = document.getElementById("results");
-    var rowCount = table.rows.length;
-    var newRow = table.insertRow(-1);
+function tableToJson(table) {
+    let data = [];
+    for (let i = 1; i < table.rows.length; i++) {
+        let tableRow = table.rows[i];
+        let rowData = [];
+        for (let j = 0; j < tableRow.cells.length; j++) {
+            rowData.push(tableRow.cells[j].innerHTML);
+        }
+        data.push(rowData);
+    }
+    return data;
+}
 
-    var cell1 = newRow.insertCell(0);
-    var element1 = document.createElement("output");
-    element1.value = x;
-    cell1.appendChild(element1);
+function clean(){
+    localStorage.clear();
+    const table = document.getElementById('results');
+    while(table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+}
 
-    var cell2 = newRow.insertCell(1);
-    var element2 = document.createElement("output");
-    element2.value = y;
-    cell2.appendChild(element2);
+function checkBox(selectedCheckbox){
+    const checkboxes = document.querySelectorAll('.checkbox');
 
-    var cell3 = newRow.insertCell(2);
-    var element3 = document.createElement("output");
-    element3.value = r;
-    cell3.appendChild(element3);
+    checkboxes.forEach(checkbox => {
+        if (checkbox !== selectedCheckbox) {
+            checkbox.checked = false; // Снимаем отметку у остальных
+        }
+    });
 
-    var cell4 = newRow.insertCell(3);
-    var element4 = document.createElement("output");
-    element4.value = results.result;
-
-    element4.value = "";
-    cell4.appendChild(element4);
-
-    var cell5 = newRow.insertCell(4);
-    var element5 = document.createElement("output");
-    element5.value = results.time;
-    cell5.appendChild(element5);
 }
